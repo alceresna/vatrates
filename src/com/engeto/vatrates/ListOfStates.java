@@ -1,7 +1,6 @@
 package com.engeto.vatrates;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -42,6 +41,20 @@ public class ListOfStates {
         return list;
     }
 
+    public void exportToFile(double limit) throws IOException {
+
+        DecimalFormat ft = new DecimalFormat("###.#");
+        String str = "vat-over-"+ft.format(limit)+".txt";
+
+        try(PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(str)))) {
+            writer.println("Seznam států se základní sazbou VAT vyšší než "+ft.format(limit)+" % a bez speciální sazby daně:\n");
+            for (State state:listOfStatesOverLimit) {
+                writer.println(state.toString(true));
+            }
+            writer.println("====================");
+            writer.println("Sazba VAT 20 % nebo nižší nebo používají speciální sazbu: "+getAbreviationsStatesUnderLimit());
+        }
+    }
     public void addState(State state) {
         this.listOfStates.add(state);
     }
@@ -51,8 +64,8 @@ public class ListOfStates {
         DecimalFormat ft = new DecimalFormat("####");
 
         for (State state:list) {
-            str += (state.getName()+" ("+state.getAbreviation()+"): "+ft.format(state.getFullRate())+
-                    " %\n");
+            str += state.toString(false)+"\n";
+
         }
         return str;
     }
@@ -66,8 +79,7 @@ public class ListOfStates {
         DecimalFormat ft = new DecimalFormat("####");
 
         for (State state:list) {
-            str += (state.getName()+" ("+state.getAbreviation()+"):   "+ft.format(state.getFullRate())+
-                    " % ("+ft.format(state.getReducedRate())+" %)\n");
+            str += state.toString(true)+"\n";
         }
         return str;
     }

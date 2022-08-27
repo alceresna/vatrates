@@ -1,12 +1,14 @@
 package com.engeto.vatrates;
 
+import java.io.IOException;
+
 public class Main {
 
     public static final String FILENAME = "vat-eu.csv";
     public static final double LIMIT = 20;
     public static void main(String[] args) {
 
-        ListOfStates list = null;
+        ListOfStates list;
         try {
             list = ListOfStates.importFromFile(FILENAME);
         } catch (StateException e) {
@@ -27,5 +29,11 @@ public class Main {
 
         System.out.println("Sazba VAT 20 % nebo nižší nebo používají speciální sazbu: "
                 +list.getAbreviationsStatesUnderLimit());
+
+        try {
+            list.exportToFile(LIMIT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

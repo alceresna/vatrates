@@ -1,5 +1,7 @@
 package com.engeto.vatrates;
 
+import java.text.DecimalFormat;
+
 public class State implements Comparable<State>{
     private String abreviation;
     private String name;
@@ -59,5 +61,16 @@ public class State implements Comparable<State>{
     @Override
     public int compareTo(State o) {
         return (int)o.getFullRate() - (int)this.getFullRate();
+    }
+
+    public String toString(Boolean withReducedRate) {
+        String str = "";
+        DecimalFormat ft = new DecimalFormat("###.#");
+        if(withReducedRate) {str += (getName()+" ("+getAbreviation()+"):   "+ft.format(getFullRate())+
+                " % ("+ft.format(getReducedRate())+" %)");}
+        else {
+            str += (getName()+" ("+getAbreviation()+"): "+ft.format(getFullRate())+ " %");
+        }
+        return str;
     }
 }
