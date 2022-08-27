@@ -2,19 +2,25 @@ package com.engeto.vatrates;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ListOfStates {
 
     private static final String DELIMITER = "\t";
     private List<State> listOfStates = new ArrayList<>();
+    private List<State> listOfStatesOverTreshold = new ArrayList<>();
+    private List<State> listOfStatesUnderTreshold = new ArrayList<>();
+
+    private double treshold = 0;
 
     public static ListOfStates importFromFile(String filename) throws StateException {
 
         ListOfStates list = new ListOfStates();
-        String line;
+        String line = "";
         State state;
         String[] items;
 
@@ -43,15 +49,41 @@ public class ListOfStates {
         this.listOfStates.add(state);
     }
 
-    public String printWithFullRate() {
-
+    private String printWithFullRate(List<State> list) {
         String str = new String("");
+        DecimalFormat ft = new DecimalFormat("####");
 
-        for (State state:listOfStates) {
-            str += (state.getName()+" ("+state.getAbreviation()+"): "+state.getFullRate()+
+        for (State state:list) {
+            str += (state.getName()+" ("+state.getAbreviation()+"): "+ft.format(state.getFullRate())+
                     " %\n");
         }
         return str;
+    }
+    public String printWithFullRate() {
+
+       return printWithFullRate(listOfStates);
+    }
+
+    private void generateListsUnderAndOver(double treshold) {
+        for (State state:listOfStates) {
+            if(!state.isSpecialRate() && state.getFullRate() > treshold) listOfStatesOverTreshold.add(state);
+            else listOfStatesUnderTreshold.add(state);
+            this.treshold = treshold;
+        }
+    }
+    public List<State> getListOfStatesOverTreshold(double treshold) {
+        if(this.treshold != treshold) generateListsUnderAndOver(treshold);
+        return listOfStatesOverTreshold;
+    }
+
+    public List<State> getListOfStatesUnderTreshold(double treshold) {
+        if(this.treshold != treshold) generateListsUnderAndOver(treshold);
+        return listOfStatesUnderTreshold;
+    }
+
+    public String printOverTresholdWithFullRate(double treshold) {
+       getListOfStatesOverTreshold(treshold);
+       return printWithFullRate(listOfStatesOverTreshold);
     }
 
 }
