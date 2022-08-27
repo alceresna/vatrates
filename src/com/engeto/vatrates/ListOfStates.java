@@ -3,10 +3,7 @@ package com.engeto.vatrates;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class ListOfStates {
 
@@ -64,6 +61,17 @@ public class ListOfStates {
        return printWithFullRate(listOfStates);
     }
 
+    private String printWithFullRateAndReducedRate(List<State> list) {
+        String str = new String("");
+        DecimalFormat ft = new DecimalFormat("####");
+
+        for (State state:list) {
+            str += (state.getName()+" ("+state.getAbreviation()+"):   "+ft.format(state.getFullRate())+
+                    " % ("+ft.format(state.getReducedRate())+" %)\n");
+        }
+        return str;
+    }
+
     private void generateListsUnderAndOver(double treshold) {
         for (State state:listOfStates) {
             if(!state.isSpecialRate() && state.getFullRate() > treshold) listOfStatesOverTreshold.add(state);
@@ -86,4 +94,12 @@ public class ListOfStates {
        return printWithFullRate(listOfStatesOverTreshold);
     }
 
+    public String printOverTresholdWithFullRateAndReducedRate(double treshold) {
+        getListOfStatesOverTreshold(treshold);
+        return printWithFullRateAndReducedRate(listOfStatesOverTreshold);
+    }
+
+    public void sortByFullRateValue(List<State> list) {
+        Collections.sort(list);
+    }
 }

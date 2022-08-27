@@ -18,7 +18,10 @@ public class Main {
         System.out.println("Seznam států se základní sazbou DPH vyšší než "+TRESHOLD+" % a bez speciální sazby daně:\n"
                 +list.printOverTresholdWithFullRate(TRESHOLD));
 
+        list.sortByFullRateValue(list.getListOfStatesOverTreshold(TRESHOLD));
 
+        System.out.println("Seznam států se základní sazbou DPH vyšší než "+TRESHOLD+" % a bez speciální sazby daně:\n"
+                +list.printOverTresholdWithFullRateAndReducedRate(TRESHOLD));
 
     }
 }

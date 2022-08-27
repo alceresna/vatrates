@@ -1,6 +1,6 @@
 package com.engeto.vatrates;
 
-public class State {
+public class State implements Comparable<State>{
     private String abreviation;
     private String name;
     private double fullRate;
@@ -54,5 +54,10 @@ public class State {
 
     public void setSpecialRate(boolean specialRate) {
         isSpecialRate = specialRate;
+    }
+
+    @Override
+    public int compareTo(State o) {
+        return (int)o.getFullRate() - (int)this.getFullRate();
     }
 }
