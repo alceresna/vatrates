@@ -9,10 +9,10 @@ public class ListOfStates {
 
     private static final String DELIMITER = "\t";
     private List<State> listOfStates = new ArrayList<>();
-    private List<State> listOfStatesOverTreshold = new ArrayList<>();
-    private List<State> listOfStatesUnderTreshold = new ArrayList<>();
+    private List<State> listOfStatesOverLimit = new ArrayList<>();
+    private List<State> listOfStatesUnderLimit = new ArrayList<>();
 
-    private double treshold = 0;
+    private double limit = 0;
 
     public static ListOfStates importFromFile(String filename) throws StateException {
 
@@ -47,7 +47,7 @@ public class ListOfStates {
     }
 
     private String printWithFullRate(List<State> list) {
-        String str = new String("");
+        String str = "";
         DecimalFormat ft = new DecimalFormat("####");
 
         for (State state:list) {
@@ -62,7 +62,7 @@ public class ListOfStates {
     }
 
     private String printWithFullRateAndReducedRate(List<State> list) {
-        String str = new String("");
+        String str = "";
         DecimalFormat ft = new DecimalFormat("####");
 
         for (State state:list) {
@@ -72,33 +72,41 @@ public class ListOfStates {
         return str;
     }
 
-    private void generateListsUnderAndOver(double treshold) {
+    private void generateListsUnderAndOver(double limit) {
         for (State state:listOfStates) {
-            if(!state.isSpecialRate() && state.getFullRate() > treshold) listOfStatesOverTreshold.add(state);
-            else listOfStatesUnderTreshold.add(state);
-            this.treshold = treshold;
+            if(!state.isSpecialRate() && state.getFullRate() > limit) listOfStatesOverLimit.add(state);
+            else listOfStatesUnderLimit.add(state);
+            this.limit = limit;
         }
     }
-    public List<State> getListOfStatesOverTreshold(double treshold) {
-        if(this.treshold != treshold) generateListsUnderAndOver(treshold);
-        return listOfStatesOverTreshold;
+    public List<State> getListOfStatesOverLimit(double limit) {
+        if(this.limit != limit) generateListsUnderAndOver(limit);
+        return listOfStatesOverLimit;
     }
 
-    public List<State> getListOfStatesUnderTreshold(double treshold) {
-        if(this.treshold != treshold) generateListsUnderAndOver(treshold);
-        return listOfStatesUnderTreshold;
+    public List<State> getListOfStatesUnderLimit(double limit) {
+        if(this.limit != limit) generateListsUnderAndOver(limit);
+        return listOfStatesUnderLimit;
     }
 
-    public String printOverTresholdWithFullRate(double treshold) {
-       getListOfStatesOverTreshold(treshold);
-       return printWithFullRate(listOfStatesOverTreshold);
+    public String printOverLimitWithFullRate(double limit) {
+       getListOfStatesOverLimit(limit);
+       return printWithFullRate(listOfStatesOverLimit);
     }
 
-    public String printOverTresholdWithFullRateAndReducedRate(double treshold) {
-        getListOfStatesOverTreshold(treshold);
-        return printWithFullRateAndReducedRate(listOfStatesOverTreshold);
+    public String printOverLimitWithFullRateAndReducedRate(double limit) {
+        getListOfStatesOverLimit(limit);
+        return printWithFullRateAndReducedRate(listOfStatesOverLimit);
     }
 
+    public String getAbreviationsStatesUnderLimit() {
+        String str = "";
+        for (State state:listOfStatesUnderLimit) {
+            str += ", "+state.getAbreviation();
+        }
+        str = str.replaceFirst(", ","");
+        return str;
+    }
     public void sortByFullRateValue(List<State> list) {
         Collections.sort(list);
     }
