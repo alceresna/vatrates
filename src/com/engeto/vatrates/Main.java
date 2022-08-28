@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws StateException {
 
         ListOfStates list;
-        double limit = 20;
+        double limit;
         DecimalFormat ft = new DecimalFormat("###.#");
 
         try {
@@ -26,9 +26,13 @@ public class Main {
         System.out.println("Zadej limit VAT sazby: ");
 
         Scanner sc = new Scanner(System.in);
-       try { limit = Double.parseDouble(sc.nextLine().replace(",",".")); }
+        String st = sc.nextLine();
+        if(st == "") limit = 20;
+        else { try { limit = Double.parseDouble(st.replace(",",".")); }
+
         catch (NumberFormatException e) {
             throw new StateException("Špatně zadaná hodnota limitu "+e.getLocalizedMessage());
+        }
         }
 
         System.out.println("Seznam států se základní sazbou VAT vyšší než "+ ft.format(limit) +" % a bez speciální sazby daně:\n"
