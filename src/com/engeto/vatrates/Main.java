@@ -2,6 +2,7 @@ package com.engeto.vatrates;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
@@ -25,7 +26,7 @@ public class Main {
         System.out.println("Zadej limit VAT sazby: ");
 
         Scanner sc = new Scanner(System.in);
-        limit = Double.parseDouble(sc.nextLine());
+        limit = Double.parseDouble(sc.nextLine().replace(",","."));
 
         System.out.println("Seznam států se základní sazbou VAT vyšší než "+ ft.format(limit) +" % a bez speciální sazby daně:\n"
                 +list.printOverLimitWithFullRate(limit));
