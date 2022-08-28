@@ -41,18 +41,20 @@ public class ListOfStates {
         return list;
     }
 
-    public void exportToFile(double limit) throws IOException {
+    public void exportToFile(double limit) throws StateException {
 
         DecimalFormat ft = new DecimalFormat("###.#");
-        String str = "vat-over-"+ft.format(limit)+".txt";
+        String filename = "vat-over-"+ft.format(limit)+".txt";
 
-        try(PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(str)))) {
+        try(PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename)))) {
             writer.println("Seznam států se základní sazbou VAT vyšší než "+ft.format(limit)+" % a bez speciální sazby daně:\n");
             for (State state:listOfStatesOverLimit) {
                 writer.println(state.toString(true));
             }
             writer.println("====================");
             writer.println("Sazba VAT "+ft.format(limit)+" % nebo nižší nebo používají speciální sazbu: "+getAbreviationsStatesUnderLimit());
+        } catch (IOException e) {
+            throw new StateException("Nepodařil se zápis do souboru "+filename+" "+e.getLocalizedMessage());
         }
     }
     public void addState(State state) {
