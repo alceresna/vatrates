@@ -13,6 +13,7 @@ public class ListOfStates {
 
     private double limit = 0;
 
+    // reads items from file and loads them to list
     public static ListOfStates importFromFile(String filename) throws StateException {
 
         ListOfStates list = new ListOfStates();
@@ -41,6 +42,7 @@ public class ListOfStates {
         return list;
     }
 
+    // creates lines from list and writes them to file
     public void exportToFile(double limit) throws StateException {
 
         DecimalFormat ft = new DecimalFormat("###.#");
@@ -61,7 +63,7 @@ public class ListOfStates {
         this.listOfStates.add(state);
     }
 
-    private String printWithFullRate(List<State> list) {
+    public String printWithFullRate(List<State> list) {
         String str = "";
         DecimalFormat ft = new DecimalFormat("####");
 
@@ -76,7 +78,7 @@ public class ListOfStates {
        return printWithFullRate(listOfStates);
     }
 
-    private String printWithFullRateAndReducedRate(List<State> list) {
+    public String printWithFullRateAndReducedRate(List<State> list) {
         String str = "";
         DecimalFormat ft = new DecimalFormat("####");
 
@@ -121,6 +123,8 @@ public class ListOfStates {
         str = str.replaceFirst(", ","");
         return str;
     }
+
+    // compares states by value of full rate (greater first)
     public void sortByFullRateValue(List<State> list) {
         Collections.sort(list);
     }

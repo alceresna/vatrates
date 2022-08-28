@@ -34,6 +34,7 @@ public class Main {
         System.out.println("Seznam států se základní sazbou VAT vyšší než "+ ft.format(limit) +" % a bez speciální sazby daně:\n"
                 +list.printOverLimitWithFullRate(limit));
 
+        // compares states by value of full rate (greater first)
         list.sortByFullRateValue(list.getListOfStatesOverLimit(limit));
 
         System.out.println("Seznam států se základní sazbou VAT vyšší než "+ ft.format(limit) +" % a bez speciální sazby daně:\n"

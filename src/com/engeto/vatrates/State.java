@@ -58,6 +58,7 @@ public class State implements Comparable<State>{
         isSpecialRate = specialRate;
     }
 
+    // compares states by value of full rate (greater first)
     @Override
     public int compareTo(State o) {
         return (int)o.getFullRate() - (int)this.getFullRate();
