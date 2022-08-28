@@ -52,7 +52,7 @@ public class ListOfStates {
                 writer.println(state.toString(true));
             }
             writer.println("====================");
-            writer.println("Sazba VAT 20 % nebo nižší nebo používají speciální sazbu: "+getAbreviationsStatesUnderLimit());
+            writer.println("Sazba VAT "+ft.format(limit)+" % nebo nižší nebo používají speciální sazbu: "+getAbreviationsStatesUnderLimit());
         }
     }
     public void addState(State state) {

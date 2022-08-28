@@ -1,6 +1,7 @@
 package com.engeto.vatrates;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Main {
@@ -11,6 +12,8 @@ public class Main {
 
         ListOfStates list;
         double limit = 20;
+        DecimalFormat ft = new DecimalFormat("###.#");
+
         try {
             list = ListOfStates.importFromFile(FILENAME);
         } catch (StateException e) {
@@ -22,19 +25,19 @@ public class Main {
         System.out.println("Zadej limit VAT sazby: ");
 
         Scanner sc = new Scanner(System.in);
-        limit = sc.nextDouble();
+        limit = Double.parseDouble(sc.nextLine());
 
-        System.out.println("Seznam států se základní sazbou VAT vyšší než "+ limit +" % a bez speciální sazby daně:\n"
+        System.out.println("Seznam států se základní sazbou VAT vyšší než "+ ft.format(limit) +" % a bez speciální sazby daně:\n"
                 +list.printOverLimitWithFullRate(limit));
 
         list.sortByFullRateValue(list.getListOfStatesOverLimit(limit));
 
-        System.out.println("Seznam států se základní sazbou VAT vyšší než "+ limit +" % a bez speciální sazby daně:\n"
+        System.out.println("Seznam států se základní sazbou VAT vyšší než "+ ft.format(limit) +" % a bez speciální sazby daně:\n"
                 +list.printOverLimitWithFullRateAndReducedRate(limit));
 
         System.out.println("====================");
 
-        System.out.println("Sazba VAT 20 % nebo nižší nebo používají speciální sazbu: "
+        System.out.println("Sazba VAT "+ft.format(limit)+" % nebo nižší nebo používají speciální sazbu: "
                 +list.getAbreviationsStatesUnderLimit());
 
         try {
