@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Locale;
 import java.util.Scanner;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 public class Main {
 
     public static final String FILENAME = "vat-eu.csv";
-    public static final double limit = 20;
+    public static final Locale locale = new Locale("cs","CZ");
+
+    public static double limit = 0;
     public static void main(String[] args) throws StateException {
 
         ListOfStates list;
@@ -24,13 +28,14 @@ public class Main {
         System.out.println("Celkový seznam států:\n"+list.printWithFullRate());
 
         System.out.println("Zadej limit VAT sazby: ");
-
         Scanner sc = new Scanner(System.in);
         String st = sc.nextLine();
         if(st == "") limit = 20;
-        else { try { limit = Double.parseDouble(st.replace(",",".")); }
+        else { try { limit = NumberFormat.getNumberInstance(locale).parse(st).doubleValue(); }
 
         catch (NumberFormatException e) {
+            throw new StateException("Špatně zadaná hodnota limitu "+e.getLocalizedMessage());
+        } catch (ParseException e) {
             throw new StateException("Špatně zadaná hodnota limitu "+e.getLocalizedMessage());
         }
         }

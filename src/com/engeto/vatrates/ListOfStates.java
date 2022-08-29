@@ -2,11 +2,14 @@ package com.engeto.vatrates;
 
 import java.io.*;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.*;
 
 public class ListOfStates {
 
     private static final String DELIMITER = "\t";
+    public static final Locale locale = new Locale("cs","CZ");
     private List<State> listOfStates = new ArrayList<>();
     private List<State> listOfStatesOverLimit = new ArrayList<>();
     private List<State> listOfStatesUnderLimit = new ArrayList<>();
@@ -28,8 +31,8 @@ public class ListOfStates {
                 items = line.split(DELIMITER);
                 String abreviation = items[0];
                 String name = items[1];
-                double fullRate = Double.parseDouble(items[2].replace(",","."));
-                double reducedRate = Double.parseDouble(items[3].replace(",","."));
+                double fullRate = NumberFormat.getNumberInstance(locale).parse(items[2]).doubleValue();
+                double reducedRate = NumberFormat.getNumberInstance(locale).parse(items[3]).doubleValue();
                 boolean isSpecialRate = Boolean.parseBoolean(items[4]);
 
                 state = new State(abreviation,name,fullRate,reducedRate,isSpecialRate);
@@ -38,6 +41,9 @@ public class ListOfStates {
         }
         catch(FileNotFoundException e){
             throw new StateException("Soubor "+filename+" nebyl nalezen"+e.getLocalizedMessage());
+        }
+        catch (ParseException e) {
+            throw new StateException("Nesprávný formát hodnoty sazby v souboru "+filename+" "+e.getLocalizedMessage());
         }
         return list;
     }
