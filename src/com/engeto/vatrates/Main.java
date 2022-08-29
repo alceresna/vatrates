@@ -27,7 +27,7 @@ public class Main {
 
         System.out.println("Celkový seznam států:\n"+list.printWithFullRate());
 
-        System.out.println("Zadej limit VAT sazby: ");
+        System.out.print("Zadej limit VAT sazby: ");
         Scanner sc = new Scanner(System.in);
         String st = sc.nextLine();
         if(st == "") limit = 20;
