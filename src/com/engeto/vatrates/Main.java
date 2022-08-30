@@ -30,13 +30,12 @@ public class Main {
         System.out.print("Zadej limit VAT sazby: ");
         Scanner sc = new Scanner(System.in);
         String st = sc.nextLine();
-        if(st == "") limit = 20;
+        if(st.equals("")) limit = 20;
         else { try { limit = NumberFormat.getNumberInstance(locale).parse(st).doubleValue(); }
 
-        catch (NumberFormatException e) {
-            throw new StateException("Špatně zadaná hodnota limitu "+e.getLocalizedMessage());
-        } catch (ParseException e) {
-            throw new StateException("Špatně zadaná hodnota limitu "+e.getLocalizedMessage());
+        catch (NumberFormatException | ParseException e) {
+            System.out.println("Špatně zadaná hodnota limitu ");
+            limit = 20;
         }
         }
 
